@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<h1>Register</h1>
+<h2>Here you can register your account to BlaBlaElectricity</h2>
+
+
+<form action="/register" method="post">
+<label>Username:<input type="text" id="username" name="username" placeholder="ChrisGran"></label>
+<br>
+<label>Email:<input type="email" id="email" name="email" placeholder="example@gmail.com"></label>
+<br>
+<label>Password:<input type="password" id="password" name="password" minlength="8" maxlength="20" placeholder="Example1234"></label>
+<br>
+<button type="submit">Send!</button>
+</form>
+</body>
+</html>
