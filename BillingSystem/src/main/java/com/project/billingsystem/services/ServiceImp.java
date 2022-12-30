@@ -4,21 +4,40 @@ import com.project.billingsystem.dtos.RegisterDto;
 import com.project.billingsystem.exceptions.*;
 import com.project.billingsystem.models.AppUser;
 import com.project.billingsystem.repositories.AppUserRepository;
-import org.springframework.context.annotation.Bean;
+import jakarta.mail.Message;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 public class ServiceImp implements Services {
+
+    @Value("{EMAIL_$USERNAME}")
+    private String username;
+
+    @Value("{$EMAIL_PASSWORD}")
+    private String password;
+    @Value("{$EMAIL_FROM}")
+    private String email;
+
+    @Value("{$EMAIL_HOST}")
+    private String host;
+
     private final AppUserRepository appUserRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public ServiceImp(AppUserRepository appUserRepository, BCryptPasswordEncoder passwordEncoder) {
+    public ServiceImp(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -47,6 +66,55 @@ public class ServiceImp implements Services {
         AppUser appUser = new AppUser(registerDto.username(), encodedPassword, registerDto.password());
         appUserRepository.save(appUser);
     }
+
+    public void sendNotification() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 13);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                sendMessage();
+            }
+        }, calendar.getTime());
+    }
+
+    private void sendMessage() {
+        List<AppUser> warningList = new ArrayList<>();
+        List<AppUser> appUserList = appUserRepository.findAll();
+        for (AppUser appUser : appUserList) {
+            if (appUser.getBalance() >= 1000) {
+                String to = appUser.getEmail();
+                Properties properties = new Properties();
+                properties.put("mail.smtp.auth", "true");
+                properties.put("mail.smtp.starttls.enable", "true");
+                properties.put("mail.smtp.host", host);
+                properties.put("mail.smtp.port", "587");
+
+                Session session = Session.getInstance(properties,
+                        new jakarta.mail.Authenticator() {
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(username, password);
+                            }
+                        });
+                    try {
+                        Message message = new MimeMessage(session);
+                        message.setFrom(new InternetAddress(email));
+                        message.setRecipient(Message.RecipientType.TO,new InternetAddress(to));
+                        message.setSubject("Warning");
+                        message.setText("You have " + appUser.getBalance() + "leeway on your account");
+                        Transport.send(message);
+                    }catch (Exception exception){
+                        System.out.println(exception.getMessage());
+                    }
+
+            }
+        }
+    }
+
 
     private boolean validatePassword(String password) {
         String regex = "^(?=.*[0-9])"
