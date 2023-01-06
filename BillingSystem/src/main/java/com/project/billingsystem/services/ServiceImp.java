@@ -1,8 +1,12 @@
 package com.project.billingsystem.services;
 
+import com.project.billingsystem.configurations.JwtService;
 import com.project.billingsystem.dtos.RegisterDto;
 import com.project.billingsystem.exceptions.*;
 import com.project.billingsystem.models.AppUser;
+import com.project.billingsystem.dtos.AuthenticationRequest;
+import com.project.billingsystem.dtos.AuthenticationResponse;
+import com.project.billingsystem.models.Role;
 import com.project.billingsystem.repositories.AppUserRepository;
 import jakarta.mail.Message;
 import jakarta.mail.PasswordAuthentication;
@@ -10,8 +14,11 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
+@Builder
 public class ServiceImp implements Services {
 
     @Value("{EMAIL_$USERNAME}")
@@ -37,13 +45,19 @@ public class ServiceImp implements Services {
 
     private final PasswordEncoder passwordEncoder;
 
-    public ServiceImp(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
+    private final JwtService jwtService;
+
+    private final AuthenticationManager authenticationManager;
+
+    public ServiceImp(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
-    public void register(RegisterDto registerDto) {
+    public AuthenticationResponse register(RegisterDto registerDto) {
         if (registerDto == null) {
             throw new IllegalArgumentException();
         }
@@ -64,7 +78,22 @@ public class ServiceImp implements Services {
         }
         String encodedPassword = passwordEncoder.encode(registerDto.password());
         AppUser appUser = new AppUser(registerDto.username(), encodedPassword, registerDto.password());
+        appUser.setRole(Role.USER);
         appUserRepository.save(appUser);
+        var jwtToken = jwtService.generateToken(appUser);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+
+
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
+        var appUser = appUserRepository.findAppUserByUsername(request.getUsername()).orElseThrow(() -> new UsernameNotFoundException(""));
+        var jwtToken = jwtService.generateToken(appUser);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
     public void sendNotification() {
@@ -83,7 +112,6 @@ public class ServiceImp implements Services {
     }
 
     private void sendMessage() {
-        List<AppUser> warningList = new ArrayList<>();
         List<AppUser> appUserList = appUserRepository.findAll();
         for (AppUser appUser : appUserList) {
             if (appUser.getBalance() >= 1000) {
@@ -100,16 +128,16 @@ public class ServiceImp implements Services {
                                 return new PasswordAuthentication(username, password);
                             }
                         });
-                    try {
-                        Message message = new MimeMessage(session);
-                        message.setFrom(new InternetAddress(email));
-                        message.setRecipient(Message.RecipientType.TO,new InternetAddress(to));
-                        message.setSubject("Warning");
-                        message.setText("You have " + appUser.getBalance() + "leeway on your account");
-                        Transport.send(message);
-                    }catch (Exception exception){
-                        System.out.println(exception.getMessage());
-                    }
+                try {
+                    Message message = new MimeMessage(session);
+                    message.setFrom(new InternetAddress(email));
+                    message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+                    message.setSubject("Warning");
+                    message.setText("You have " + appUser.getBalance() + "leeway on your account");
+                    Transport.send(message);
+                } catch (Exception exception) {
+                    System.out.println(exception.getMessage());
+                }
 
             }
         }

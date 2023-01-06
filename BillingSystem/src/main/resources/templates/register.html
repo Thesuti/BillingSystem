@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Welcome!</title>
 </head>
 <body>
 <h1>Register</h1>
 <h2>Here you can register your account to BlaBlaElectricity</h2>
 
+<form action="" method="post">
+    <label for="username">Username:
+        <input type="text" name="username" id="username" placeholder="Chris">
+    </label>
+    <br>
+    <label for="email">Email:
+        <input type="email" name="email" id="email" placeholder="example@example.com">
+    </label>
+    <br>
+    <label for="password">Password:
+        <input type="text" name="password" id="password" placeholder="Example1234">
+    </label>
 
-<form action="/register" method="post">
-<label>Username:<input type="text" id="username" name="username" placeholder="ChrisGran"></label>
-<br>
-<label>Email:<input type="email" id="email" name="email" placeholder="example@gmail.com"></label>
-<br>
-<label>Password:<input type="password" id="password" name="password" minlength="8" maxlength="20" placeholder="Example1234"></label>
-<br>
-<button type="submit">Send!</button>
+    <button class="register-button" type="submit">Send</button>
 </form>
 </body>
 </html>
