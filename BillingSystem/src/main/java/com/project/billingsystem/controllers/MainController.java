@@ -34,13 +34,12 @@ public class MainController {
     }*/
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterDto registerDto){
-        services.register(registerDto);
+    public ResponseEntity register(@RequestBody RegisterDto registerDto){
         return ResponseEntity.ok().body(services.register(registerDto));
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest request){
+    public ResponseEntity register(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok().body(services.authenticate(request));
     }
 

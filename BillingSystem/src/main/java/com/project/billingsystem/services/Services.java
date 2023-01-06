@@ -7,9 +7,9 @@ import com.project.billingsystem.dtos.RegisterDto;
 
 public interface Services {
 
-    AuthenticationResponse register(RegisterDto registerDto);
+    String register(RegisterDto registerDto);
 
     void sendNotification();
 
-    AuthenticationResponse authenticate(AuthenticationRequest request);
+    String authenticate(AuthenticationRequest request);
 }

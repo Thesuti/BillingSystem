@@ -14,8 +14,8 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-@Builder
 public class ServiceImp implements Services {
 
     @Value("{EMAIL_$USERNAME}")
@@ -57,7 +56,7 @@ public class ServiceImp implements Services {
     }
 
     @Override
-    public AuthenticationResponse register(RegisterDto registerDto) {
+    public String register(RegisterDto registerDto) {
         if (registerDto == null) {
             throw new IllegalArgumentException();
         }
@@ -77,23 +76,19 @@ public class ServiceImp implements Services {
             throw new PasswordNotValidException();
         }
         String encodedPassword = passwordEncoder.encode(registerDto.password());
-        AppUser appUser = new AppUser(registerDto.username(), encodedPassword, registerDto.password());
+        AppUser appUser = new AppUser(registerDto.username(), registerDto.email(), encodedPassword);
         appUser.setRole(Role.USER);
         appUserRepository.save(appUser);
         var jwtToken = jwtService.generateToken(appUser);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+        return jwtToken;
     }
 
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public String authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
         var appUser = appUserRepository.findAppUserByUsername(request.getUsername()).orElseThrow(() -> new UsernameNotFoundException(""));
         var jwtToken = jwtService.generateToken(appUser);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+        return jwtToken;
     }
 
     public void sendNotification() {
