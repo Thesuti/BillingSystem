@@ -1,11 +1,10 @@
 package com.project.billingsystem.services;
 
 import com.project.billingsystem.configurations.JwtService;
+import com.project.billingsystem.dtos.AuthenticationRequest;
 import com.project.billingsystem.dtos.RegisterDto;
 import com.project.billingsystem.exceptions.*;
 import com.project.billingsystem.models.AppUser;
-import com.project.billingsystem.dtos.AuthenticationRequest;
-import com.project.billingsystem.dtos.AuthenticationResponse;
 import com.project.billingsystem.models.Role;
 import com.project.billingsystem.repositories.AppUserRepository;
 import jakarta.mail.Message;
@@ -15,7 +14,6 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -83,7 +81,7 @@ public class ServiceImp implements Services {
 
 
     public String authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         var appUser = appUserRepository.findAppUserByUsername(request.getUsername()).orElseThrow(() -> new UsernameNotFoundException(""));
         var jwtToken = jwtService.generateToken(appUser);
         return jwtToken;
@@ -147,5 +145,9 @@ public class ServiceImp implements Services {
         }
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
+    }
+
+    private void validateRegister(){
+
     }
 }

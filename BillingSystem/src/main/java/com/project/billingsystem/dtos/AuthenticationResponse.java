@@ -1,8 +1,5 @@
 package com.project.billingsystem.dtos;
 
-import lombok.Builder;
-import lombok.Data;
-
 public class AuthenticationResponse {
 
     private String token;

@@ -1,8 +1,7 @@
 package com.project.billingsystem.controllers;
 
-import com.project.billingsystem.dtos.RegisterDto;
 import com.project.billingsystem.dtos.AuthenticationRequest;
-import com.project.billingsystem.dtos.AuthenticationResponse;
+import com.project.billingsystem.dtos.RegisterDto;
 import com.project.billingsystem.services.Services;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
