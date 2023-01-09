@@ -7,7 +7,7 @@ import com.project.billingsystem.dtos.RegisterDto;
 
 public interface Services {
 
-    String register(RegisterDto registerDto);
+    void register(RegisterDto registerDto);
 
     void sendNotification();
 

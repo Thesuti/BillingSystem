@@ -56,7 +56,7 @@ public class ServiceImp implements Services {
     }
 
     @Override
-    public String register(RegisterDto registerDto) {
+    public void register(RegisterDto registerDto) {
         if (registerDto == null) {
             throw new IllegalArgumentException();
         }
@@ -79,8 +79,6 @@ public class ServiceImp implements Services {
         AppUser appUser = new AppUser(registerDto.username(), registerDto.email(), encodedPassword);
         appUser.setRole(Role.USER);
         appUserRepository.save(appUser);
-        var jwtToken = jwtService.generateToken(appUser);
-        return jwtToken;
     }
 
 

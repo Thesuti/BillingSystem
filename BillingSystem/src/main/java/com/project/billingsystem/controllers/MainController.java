@@ -35,7 +35,8 @@ public class MainController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterDto registerDto){
-        return ResponseEntity.ok().body(services.register(registerDto));
+        services.register(registerDto);
+        return ResponseEntity.ok().body("Successfully registered");
     }
 
     @PostMapping("/authenticate")
