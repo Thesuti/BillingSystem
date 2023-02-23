@@ -1,16 +1,15 @@
 package com.project.billingsystem.models;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-@Builder
 public class AppUser implements UserDetails {
 
     @Id
@@ -29,11 +28,17 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private boolean validated;
+
+    private Date date;
+
     public AppUser(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.hasElectricity = true;
+        this.validated = false;
+        this.balance = 0.0;
     }
 
     public AppUser() {
@@ -47,6 +52,8 @@ public class AppUser implements UserDetails {
     public Long getId() {
         return id;
     }
+
+    //new services and classes needed
 
     @Override
     public String getUsername() {

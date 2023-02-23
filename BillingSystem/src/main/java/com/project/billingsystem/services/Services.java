@@ -8,7 +8,5 @@ public interface Services {
 
     void register(RegisterDto registerDto);
 
-    void sendNotification();
-
     String authenticate(AuthenticationRequest request);
 }

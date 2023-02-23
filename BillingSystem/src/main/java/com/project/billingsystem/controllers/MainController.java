@@ -2,6 +2,7 @@ package com.project.billingsystem.controllers;
 
 import com.project.billingsystem.dtos.AuthenticationRequest;
 import com.project.billingsystem.dtos.RegisterDto;
+import com.project.billingsystem.services.EmailService;
 import com.project.billingsystem.services.Services;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MainController {
 
-    public MainController(Services services) {
+    public MainController(Services services, EmailService emailService) {
         this.services = services;
+        this.emailService = emailService;
     }
 
     private final Services services;
+
+    private final EmailService emailService;
 
     /*@GetMapping("/")
     public String welcomePage(){
@@ -41,6 +45,12 @@ public class MainController {
     @PostMapping("/authenticate")
     public ResponseEntity register(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok().body(services.authenticate(request));
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity sendEmailTest(){
+        emailService.sendEmail();
+       return ResponseEntity.ok().body("ok");
     }
 
 }
