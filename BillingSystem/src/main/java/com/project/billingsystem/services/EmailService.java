@@ -4,9 +4,8 @@ import com.project.billingsystem.repositories.AppUserRepository;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.stereotype.Service;
-
 import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.stereotype.Service;
 
 
 import java.util.Properties;
@@ -21,6 +20,7 @@ public class EmailService {
 
     private final AppUserRepository appUserRepository;
 
+    //@Scheduled(cron = "* * * *")
     public void sendEmail() {
         Dotenv dotenv = null;
         dotenv = Dotenv.configure().load();
@@ -46,11 +46,11 @@ public class EmailService {
             message.setFrom(new InternetAddress(username));
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse("")
+                    InternetAddress.parse("kecskes.kristof98@gmail.com")
             );
-            message.setSubject("Testing Gmail TLS");
-            message.setText("Dear Mail Crawler,"
-                    + "\n\n Please do not spam my email!");
+            message.setSubject("Ez a Kristóf teszt emailja");
+            message.setText("Kedves Péter,"
+                    + "\n\n Hello!");
 
             Transport.send(message);
 

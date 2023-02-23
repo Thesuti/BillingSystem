@@ -5,6 +5,7 @@ import com.project.billingsystem.dtos.RegisterDto;
 import com.project.billingsystem.services.EmailService;
 import com.project.billingsystem.services.Services;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +47,7 @@ public class MainController {
     public ResponseEntity register(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok().body(services.authenticate(request));
     }
+
 
     @GetMapping("/test")
     public ResponseEntity sendEmailTest(){
