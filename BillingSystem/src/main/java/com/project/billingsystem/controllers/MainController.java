@@ -2,6 +2,8 @@ package com.project.billingsystem.controllers;
 
 import com.project.billingsystem.dtos.AuthenticationRequest;
 import com.project.billingsystem.dtos.RegisterDto;
+import com.project.billingsystem.models.AppUser;
+import com.project.billingsystem.repositories.AppUserRepository;
 import com.project.billingsystem.services.EmailService;
 import com.project.billingsystem.services.Services;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +13,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 public class MainController {
 
-    public MainController(Services services, EmailService emailService) {
+    public MainController(Services services, EmailService emailService,
+                          AppUserRepository appUserRepository) {
         this.services = services;
         this.emailService = emailService;
+        this.appUserRepository = appUserRepository;
     }
 
     private final Services services;
 
     private final EmailService emailService;
+    private final AppUserRepository appUserRepository;
 
     /*@GetMapping("/")
     public String welcomePage(){
@@ -49,10 +57,13 @@ public class MainController {
     }
 
 
-    @GetMapping("/test")
-    public ResponseEntity sendEmailTest(){
-        emailService.sendEmail();
-       return ResponseEntity.ok().body("ok");
+    @GetMapping("/sendemail")
+    public ResponseEntity sendEmail(){
+        List<AppUser> appUserList = appUserRepository.findAll();
+        for (AppUser appUser: appUserList) {
+            emailService.sendEmail(appUser.getEmail());
+        }
+       return ResponseEntity.ok().body("Email sent to all AppUsers");
     }
 
 }

@@ -1,10 +1,12 @@
 package com.project.billingsystem.services;
 
+import com.project.billingsystem.models.AppUser;
 import com.project.billingsystem.repositories.AppUserRepository;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 
@@ -21,7 +23,7 @@ public class EmailService {
     private final AppUserRepository appUserRepository;
 
     //@Scheduled(cron = "* * * *")
-    public void sendEmail() {
+    public void sendEmail(String email) {
         Dotenv dotenv = null;
         dotenv = Dotenv.configure().load();
         String username = dotenv.get("EMAIL");
@@ -46,10 +48,10 @@ public class EmailService {
             message.setFrom(new InternetAddress(username));
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse("kecskes.kristof98@gmail.com")
+                    InternetAddress.parse(email)
             );
-            message.setSubject("Ez a Kristóf teszt emailja");
-            message.setText("Kedves Péter,"
+            message.setSubject("This is a test email");
+            message.setText("Dear,User"
                     + "\n\n Hello!");
 
             Transport.send(message);
