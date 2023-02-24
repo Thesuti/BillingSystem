@@ -80,4 +80,8 @@ public class ServiceImp implements Services {
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
+
+    private void validateEmail(){
+
+    }
 }
