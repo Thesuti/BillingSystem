@@ -1,6 +1,5 @@
 package com.project.billingsystem.services;
 
-import com.project.billingsystem.models.AppUser;
 import com.project.billingsystem.repositories.AppUserRepository;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
@@ -22,10 +21,10 @@ public class EmailService {
 
     private final AppUserRepository appUserRepository;
 
-    //@Scheduled(cron = "* * * *")
-    public void sendEmail(String email) {
-        Dotenv dotenv = null;
-        dotenv = Dotenv.configure().load();
+    //@Scheduled(cron = "0 0 10 1 * *") 1th of every month at 10 am trigger email sending
+    @Scheduled(cron = "0 * * * * *") // Every minute for testing
+    public void sendEmail() {
+        Dotenv dotenv = Dotenv.configure().load();
         String username = dotenv.get("EMAIL");
         String password = dotenv.get("PASS");
         System.out.println("username: " + username + "\n\n password" + password);
@@ -48,7 +47,7 @@ public class EmailService {
             message.setFrom(new InternetAddress(username));
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse(email)
+                    InternetAddress.parse("kecskes.kristof98@gmail.com")
             );
             message.setSubject("This is a test email");
             message.setText("Dear,User"

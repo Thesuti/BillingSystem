@@ -56,14 +56,14 @@ public class MainController {
         return ResponseEntity.ok().body(services.authenticate(request));
     }
 
-
-    @GetMapping("/sendemail")
+    //Dont delete it. It help in testing purposes.
+    /*@GetMapping("/sendemail")
     public ResponseEntity sendEmail(){
         List<AppUser> appUserList = appUserRepository.findAll();
         for (AppUser appUser: appUserList) {
             emailService.sendEmail(appUser.getEmail());
         }
        return ResponseEntity.ok().body("Email sent to all AppUsers");
-    }
+    }*/
 
 }
