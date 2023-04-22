@@ -22,7 +22,7 @@ public class EmailService {
     private final AppUserRepository appUserRepository;
 
     //@Scheduled(cron = "0 0 10 1 * *") 1th of every month at 10 am trigger email sending
-    @Scheduled(cron = "0 * * * * *") // Every minute for testing
+    //@Scheduled(cron = "0 * * * * *") // Every minute for testing
     public void sendEmail() {
         Dotenv dotenv = Dotenv.configure().load();
         String username = dotenv.get("EMAIL");
@@ -47,11 +47,11 @@ public class EmailService {
             message.setFrom(new InternetAddress(username));
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse("kecskes.kristof98@gmail.com")
+                    InternetAddress.parse("")
             );
             message.setSubject("This is a test email");
-            message.setText("Dear,User"
-                    + "\n\n Hello!");
+            message.setContent("Dear,User"
+                    + "\n\n Hello!","");
 
             Transport.send(message);
 
@@ -60,6 +60,7 @@ public class EmailService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+
 
 
     }

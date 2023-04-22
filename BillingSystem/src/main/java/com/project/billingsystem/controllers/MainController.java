@@ -6,6 +6,7 @@ import com.project.billingsystem.models.AppUser;
 import com.project.billingsystem.repositories.AppUserRepository;
 import com.project.billingsystem.services.EmailService;
 import com.project.billingsystem.services.Services;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,5 +66,7 @@ public class MainController {
         }
        return ResponseEntity.ok().body("Email sent to all AppUsers");
     }*/
+
+
 
 }

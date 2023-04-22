@@ -81,7 +81,4 @@ public class ServiceImp implements Services {
         return matcher.matches();
     }
 
-    private void validateEmail(){
-
-    }
 }
