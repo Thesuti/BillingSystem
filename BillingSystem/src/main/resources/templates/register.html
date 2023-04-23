@@ -6,23 +6,30 @@
     <title>Welcome!</title>
 </head>
 <body>
-<h1>Register</h1>
-<h2>Here you can register your account to BlaBlaElectricity</h2>
+<div class="container">
+<p id="head"> Create a BlaBla account</p>
+<p class="blabla">One account for all your Blabla stuff</p>
 
 <form action="" method="post">
+    <div class="labels">
     <label for="username">Username:
-        <input type="text" name="username" id="username" placeholder="Chris">
+        <input type="text" name="username" id="username">
     </label>
     <br>
     <label for="email">Email:
-        <input type="email" name="email" id="email" placeholder="example@example.com">
+        <input type="email" name="email" id="email">
     </label>
     <br>
     <label for="password">Password:
-        <input type="text" name="password" id="password" placeholder="Example1234">
+        <input type="text" name="password" id="password">
     </label>
+    </div>
+    <p class="terms" > By clicking this button you agree our terms and condition</p>
 
+    <div class="button-pos">
     <button class="register-button" type="submit">Send</button>
+    </div>
 </form>
+</div>
 </body>
 </html>
