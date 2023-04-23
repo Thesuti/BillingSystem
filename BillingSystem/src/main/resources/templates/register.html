@@ -7,29 +7,52 @@
 </head>
 <body>
 <div class="container">
-<p id="head"> Create a BlaBla account</p>
-<p class="blabla">One account for all your Blabla stuff</p>
+    <p id="head"> Create a BlaBla account</p>
+    <p class="blabla">One account for all your Blabla stuff</p>
 
-<form action="" method="post">
-    <div class="labels">
-    <label for="username">Username:
-        <input type="text" name="username" id="username">
-    </label>
-    <br>
-    <label for="email">Email:
-        <input type="email" name="email" id="email">
-    </label>
-    <br>
-    <label for="password">Password:
-        <input type="text" name="password" id="password">
-    </label>
-    </div>
-    <p class="terms" > By clicking this button you agree our terms and condition</p>
+    <form class="form">
+        <div class="labels">
+            <label for="username">Username:
+                <input type="text" name="username" id="username">
+            </label>
+            <br>
+            <label for="email">Email:
+                <input type="email" name="email" id="email">
+            </label>
+            <br>
+            <label for="password">Password:
+                <input type="password" name="password" id="password">
+            </label>
+        </div>
+        <p class="terms"> By clicking this button you agree our terms and condition</p>
 
-    <div class="button-pos">
-    <button class="register-button" type="submit">Send</button>
-    </div>
-</form>
+        <div class="button-pos">
+            <button class="register-button" type="submit">Send</button>
+        </div>
+        <script>
+            const formEl = document.querySelector("form");
+
+            formEl.addEventListener("submit", event => {
+                event.preventDefault();
+
+                const formData = new FormData(formEl);
+                const data = Object.fromEntries(formData);
+
+
+                fetch("http://localhost:8080/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                }).then(res => res.json())
+                    .then(data => console.log(data))
+                    .catch(err => console.log(err));
+            });
+
+
+        </script>
+    </form>
 </div>
 </body>
 </html>

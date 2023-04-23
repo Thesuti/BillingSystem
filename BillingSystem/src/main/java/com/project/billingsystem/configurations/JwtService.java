@@ -1,5 +1,7 @@
 package com.project.billingsystem.configurations;
 
+import com.project.billingsystem.dtos.JwtDto;
+import com.project.billingsystem.models.AppUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,7 +39,7 @@ public class JwtService {
                 .getBody();
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(AppUser userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
@@ -54,7 +56,7 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public String generateToken(Map<String, Object> extractClaims, UserDetails userDetails) {
+    public String generateToken(Map<String, Object> extractClaims, AppUser userDetails) {
         return Jwts
                 .builder()
                 .setClaims(extractClaims)

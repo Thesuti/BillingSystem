@@ -79,8 +79,6 @@ public class AppUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
