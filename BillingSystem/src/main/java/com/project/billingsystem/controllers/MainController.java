@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class MainController {
 
     public MainController(Services services, EmailService emailService,
@@ -34,7 +35,7 @@ public class MainController {
     public String welcomePage(){
         return "index";
     }*/
-    @GetMapping("/")
+    @GetMapping("/a")
     public ResponseEntity welcomePage(){
         return ResponseEntity.ok().body("Hello here Traveler");
     }
@@ -50,8 +51,9 @@ public class MainController {
         return ResponseEntity.ok().body("Successfully registered");
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     public ResponseEntity register(@RequestBody AuthenticationRequest request){
+        System.out.println(services.authenticate(request));
         return ResponseEntity.ok().body(services.authenticate(request));
     }
 

@@ -1,0 +1,100 @@
+.register-button {
+    background-color: #587bcc;
+    color: white;
+    border: none;
+    padding: 7px 50px;
+    border-radius: 5px;
+    font-family: Arial, serif;
+    font-size: 20px;
+    width: 300px;
+    margin-left: 20px;
+    font-weight: bold;
+    opacity: 0.8;
+    transform: rotateX(2deg);
+    transition: opacity 0.5s, transform .5s;
+}
+
+.register-button:hover {
+    opacity: 1;
+    box-shadow: 2px 2px 10px rgba(12, 43, 0, 0.5);
+    transform: scale(1.1);
+
+}
+
+.button-pos {
+    margin-top: 20px;
+    margin-left: 25px;
+
+}
+
+.container {
+    background: #eae9e9;
+    border: black;
+    position: absolute;
+    top: 50%;
+    left: 80%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 520px;
+    border-radius: 10px;
+    opacity: 0.9;
+}
+
+
+body {
+    background: url("https://free4kwallpapers.com/uploads/wallpaper/lamp-outlet-idea-electricity-wallpaper-1920x1080-wallpaper.jpg");
+    font-family: Arial, serif;
+}
+
+.head {
+    text-align: center;
+    margin-top: 40px;
+    color: black;
+    font-size: 30px;
+}
+
+.blabla {
+    font-size: 14px;
+    text-align: center;
+    color: #797979;
+}
+
+label, input {
+    flex-direction: column;
+    width: 90%;
+    margin-top: 6px;
+    display: block;
+}
+
+label {
+    font-size: 18px;
+}
+
+input {
+    font-size: 18px;
+    height: 30px;
+    outline: none;
+    border-radius: 6px;
+    border: 1px solid #b6b6b6;
+}
+
+.labels {
+    padding-left: 50px;
+}
+
+input:focus {
+    border: 3px solid #97c5f8;
+    box-shadow: 0 0 5px #97c5f8;
+}
+
+.terms{
+    padding-left: 50px;
+    padding-right: 50px;
+    font-size: 14px;
+    color: #797979;
+}
+
+
+
+

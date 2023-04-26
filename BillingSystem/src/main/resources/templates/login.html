@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="loginStyle.css">
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<div class="container">
+    <p class="head">Login to your Blabla Account</p>
+<form class="form">
+    <div class="labels">
+    <label for="username">Username
+        <input type="text" name="username" id="username" >
+    </label>
+    <label for="password">Password
+        <input type="password" name="password" id="password">
+    </label>
+    </div>
+    <div class="button-pos">
+    <button type="submit" class="login-button">Login</button>
+    </div>
+</form>
+</div>
+</body>
+
+<script>
+
+    const formEl = document.querySelector("form");
+
+    formEl.addEventListener("submit", event => {
+            event.preventDefault()
+        const formData = new FormData(formEl);
+        const data = Object.fromEntries(formData);
+
+  fetch("http://localhost:8080/login" ,{
+    method: "POST",
+    headers:{
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  }).then(response => {
+    if (response.status === 200){
+        window.location.replace("http://localhost:8080/a")
+        console.log(response.text());
+        console.log(response.status);
+    }else{
+        console.log(response.text());
+        console.log(response.status);
+    }
+  }).catch(err => console.log(err))});
+
+</script>
+</html>
