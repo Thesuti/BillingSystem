@@ -1,6 +1,5 @@
 package com.project.billingsystem.configurations;
 
-import com.project.billingsystem.dtos.JwtDto;
 import com.project.billingsystem.models.AppUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

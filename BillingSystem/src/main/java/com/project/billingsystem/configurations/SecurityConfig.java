@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .disable()
                 //.cors(Customizer.withDefaults())
                 .authorizeHttpRequests()
-                .requestMatchers("/register","/login","/test").permitAll()
+                .requestMatchers("/register","/login","/test","/profile/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

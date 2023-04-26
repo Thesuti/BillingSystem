@@ -26,10 +26,10 @@ public class ProfileController {
     public ResponseEntity getUserProfilePage(@PathVariable String profileName, HttpServletRequest request, Authentication authentication) {
         String token = profileService.extractTokenFromRequest(request);
         System.out.println("Token : " + token);
-        if (profileName.equals(authentication.getName())) {
+        //if (profileName.equals(authentication.getName())) {
             return ResponseEntity.ok().body(appUserRepository.findAppUserByUsername(profileName));
-        }
-        return ResponseEntity.status(401).body("Unauthorized");
+        //}
+        //return ResponseEntity.status(401).body("Unauthorized");
     }
 
 
